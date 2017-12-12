@@ -74,16 +74,9 @@
       //      template: '<div>{{ "hello"}}</div>'
       template: '#sub-template',
 
-
-    })
-    var app2 = new Vue({
-      el: '#app-2',
-      data: {
-        message: 'You loaded this page on ' + new Date().toLocaleString()
-      },
-
+      // https://vuejs.org/v2/guide/components.html
       mounted: function () {
-        console.log("mounted");
+        console.log("mounted sub:", this.$refs.pie);
         Plotly.plot(this.$refs.pie, [{
           x: [1, 2, 3, 4, 5],
           y: [1, 2, 4, 8, 16]
@@ -97,6 +90,15 @@
           // entire view has been rendered
         })
       }
+
+    })
+    var app2 = new Vue({
+      el: '#app-2',
+      data: {
+        message: 'You loaded this page on ' + new Date().toLocaleString()
+      }
+
+
 
     })
   </script>
