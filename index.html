@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Vue version of Plotly line chart</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+
+</head>
+
+<body>
+
+  <!-- component template -->
+  <!-- https://github.com/vue-bulma/vue-admin/blob/master/client/views/charts/Plotly.vue#L19:16     -->
+  <!-- https://vuejs.org/v2/guide/components.html -->
+  <script type="text/x-template" id="sub-template">
+    <div>
+      sub-component
+      <div ref="pie">
+      </div>
+    </div>
+    <!-- <table v-if="filteredData.length">
+    <thead>
+      <tr>
+        <th v-for="key in columns"
+          @click="sortBy(key)"
+          :class="{ active: sortKey == key }">
+          {{ key | capitalize }}
+          <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
+          </span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="entry in filteredData">
+        <td v-for="key in columns">
+          {{entry[key]}}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <p v-else>No matches found.</p> -->
+  </script>
+  <!-- <div id="app">
+      <p>{{ message }}</p>
+    </div>
+    <script language="JavaScript">
+    new Vue({
+      el: '#app',
+      data: {
+        message: 'Hello Vue.js!'
+      }
+    }) -->
+  <div id="app-2">
+    <span v-bind:title="message">
+        Hover your mouse over me for a few seconds
+        to see my dynamically bound title!
+      </span>
+    <div>
+      <sub-component>
+      </sub-component>
+    </div>
+  </div>
+  <!-- http://blog.tonycube.com/2017/04/vuejs-8-lifecycle.html -->
+  <script language="JavaScript">
+    Vue.component('sub-component', {
+      // The todo-item component now accepts a
+      // "prop", which is like a custom attribute.
+      // This prop is called todo.
+      // props: ['todo'],
+      // template: '<li>{{ todo.text }}</li>'
+      //      template: '<div>{{ "hello"}}</div>'
+      template: '#sub-template',
+
+
+    })
+    var app2 = new Vue({
+      el: '#app-2',
+      data: {
+        message: 'You loaded this page on ' + new Date().toLocaleString()
+      },
+
+      mounted: function () {
+        console.log("mounted");
+        Plotly.plot(this.$refs.pie, [{
+          x: [1, 2, 3, 4, 5],
+          y: [1, 2, 4, 8, 16]
+        }], {
+          margin: {
+            t: 0
+          }
+        });
+        this.$nextTick(function () {
+          // Code that will run only after the
+          // entire view has been rendered
+        })
+      }
+
+    })
+  </script>
+
+  <!-- <script>
+    Plotly.plot(this.$refs.pie, [{
+      x: [1, 2, 3, 4, 5],
+      y: [1, 2, 4, 8, 16]
+    }], {
+      margin: {
+        t: 0
+      }
+    });
+  </script> -->
+
+</body>
+
+</html>
