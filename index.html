@@ -18,7 +18,7 @@
   <script type="text/x-template" id="sub-template">
     <div>
       sub-component
-      <div ref="pie">
+      <div ref="pie2">
       </div>
     </div>
     <!-- <table v-if="filteredData.length">
@@ -53,7 +53,7 @@
         message: 'Hello Vue.js!'
       }
     }) -->
-  <div id="app-2">
+  <div id="app">
     <span v-bind:title="message">
         Hover your mouse over me for a few seconds
         to see my dynamically bound title!
@@ -61,6 +61,16 @@
     <div>
       <sub-component>
       </sub-component>
+    </div>
+    <select v-model="selected">
+      <option disabled value="">Please select one</option>
+      <option>A</option>
+      <option>B</option>
+      <!-- <option>C</option> -->
+    </select>
+    <span>Selected: {{ selected }}</span>
+
+    <div ref="pie">
     </div>
   </div>
   <!-- http://blog.tonycube.com/2017/04/vuejs-8-lifecycle.html -->
@@ -73,33 +83,74 @@
       // template: '<li>{{ todo.text }}</li>'
       //      template: '<div>{{ "hello"}}</div>'
       template: '#sub-template',
-
-      // https://vuejs.org/v2/guide/components.html
-      mounted: function () {
-        console.log("mounted sub:", this.$refs.pie);
-        Plotly.plot(this.$refs.pie, [{
+    })
+    var app = new Vue({
+      el: '#app',
+      data: {
+        message: 'You loaded this page on ' + new Date().toLocaleString(),
+        selected: '',
+        data1: {
           x: [1, 2, 3, 4, 5],
           y: [1, 2, 4, 8, 16]
-        }], {
-          margin: {
-            t: 0
+        },
+        data2: {
+          x: [5, 4, 3, 2, 1],
+          y: [1, 2, 4, 8, 16]
+        },
+      },
+
+      //called before "beforeUpdate"
+      watch: {
+        selected: function (val, oldVal) {
+          console.log('new selected: %s, old: %s', val, oldVal)
+          if (val !== oldVal) {
+            //redraw Plotly
+            if(this.selected == "B") {
+              console.log("try to draw data2");
+
+              // relayout: use the original data, just change layout
+              // Plotly.relayout(this.$refs.pie, [this.data2]);
+               // Plotly.update(this.$refs.pie, [this.data2]);
+               console.log("data2:", this.data2);
+
+               //FIXIT:
+               // somehow .update does not effect https://plot.ly/javascript/plotlyjs-function-reference/#plotlyupdate
+               // so use newPlot
+               Plotly.newPlot(this.$refs.pie, [this.data2]);
+            }
           }
-        });
-        this.$nextTick(function () {
+        }
+      },
+
+      // or use watch
+      beforeUpdate: function() {
+        console.log("before update");
+      },
+
+      methods: {
+        redrawPlotly: function() {
+
+        }
+      },
+      // https://vuejs.org/v2/guide/components.html
+      mounted: function() {
+        console.log("mounted sub:", this.$refs.pie);
+        // Plotly.plot(this.$refs.pie, [this.data1], {
+        //   margin: {
+        //     t: 0
+        //   }
+        // });
+
+        console.log("data1:", this.data1);
+
+
+        Plotly.plot(this.$refs.pie, [this.data1]);
+
+        // this.$nextTick(function() {
           // Code that will run only after the
           // entire view has been rendered
-        })
+        // })
       }
-
-    })
-    var app2 = new Vue({
-      el: '#app-2',
-      data: {
-        message: 'You loaded this page on ' + new Date().toLocaleString()
-      }
-
-
-
     })
   </script>
 
