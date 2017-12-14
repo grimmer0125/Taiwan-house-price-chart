@@ -3,14 +3,15 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title>台灣的房價圖表 Taiwan house data </title>
+
+  <title>台灣的房價圖表 Taiwan house price chart </title>
   <script src="https://cdn.jsdelivr.net/npm/vue"></script>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
   <style>
-  .flex-container {
-    display: flex;
-  }
+    .flex-container {
+      display: flex;
+    }
   </style>
 </head>
 
@@ -68,25 +69,25 @@
     </div>
     <div class="flex-container">
       <div>
-        <select v-model="selectedHouseType">
+        <select style="font-size:24px;" v-model="selectedHouseType">
         <!-- <option disabled value="">Please select one</option> -->
         <!-- <option>A</option>
         <option>B</option> -->
 
-        <option v-for="option in houseTypeOptions" v-bind:value="option.value">
-          {{ option.text }}
-        </option>
+          <option v-for="option in houseTypeOptions" v-bind:value="option.value">
+            {{ option.text }}
+          </option>
 
-        <!-- <option>C</option> -->
-      </select>
+          <!-- <option>C</option> -->
+        </select>
       </div>
       <!-- <span>Selected: {{ selected }}</span> -->
 
       <div>
-        <select v-model="selectedCity">
-        <option v-for="city in cityList" v-bind:value="city.code">
-          {{ city.name }}
-        </option>
+        <select style="font-size:24px;" v-model="selectedCity">
+          <option v-for="city in cityList" v-bind:value="city.code">
+            {{ city.name }}
+          </option>
       </select>
       </div>
     </div>
@@ -285,36 +286,31 @@
             // array
             const quarterData = this.houseData[quarter];
             for (let city of quarterData) {
-                console.log("city:%s;target:%s", city.code, this.selectedCity)
-                if (city.code == this.selectedCity ) {
+              console.log("city:%s;target:%s", city.code, this.selectedCity)
+              if (city.code == this.selectedCity) {
 
-                  cityName = city.name;
-                  //bingo
-                  if(quarter.indexOf("S1")>-1) {
-                    x_list.push(quarter.replace("S1", ".125"));
-                  }
-                  else if(quarter.indexOf("S2")>-1) {
-                    x_list.push(quarter.replace("S2", ".375"));
-                  }
-                  else if(quarter.indexOf("S3")>-1) {
-                    x_list.push(quarter.replace("S3", ".625"));
-                  }
-                  else if(quarter.indexOf("S4")>-1) {
-                    x_list.push(quarter.replace("S4", ".875"));
-                  }
-
-                  if(this.selectedHouseType == "A") {
-                    y_list.push(city.priceA)
-                  }
-                  else if(this.selectedHouseType == "B") {
-                    y_list.push(city.priceB)
-                  }
-                  else if(this.selectedHouseType == "C") {
-                    y_list.push(city.price)
-                  }
-                  //
-                  break;
+                cityName = city.name;
+                //bingo
+                if (quarter.indexOf("S1") > -1) {
+                  x_list.push(quarter.replace("S1", ".125"));
+                } else if (quarter.indexOf("S2") > -1) {
+                  x_list.push(quarter.replace("S2", ".375"));
+                } else if (quarter.indexOf("S3") > -1) {
+                  x_list.push(quarter.replace("S3", ".625"));
+                } else if (quarter.indexOf("S4") > -1) {
+                  x_list.push(quarter.replace("S4", ".875"));
                 }
+
+                if (this.selectedHouseType == "A") {
+                  y_list.push(city.priceA)
+                } else if (this.selectedHouseType == "B") {
+                  y_list.push(city.priceB)
+                } else if (this.selectedHouseType == "C") {
+                  y_list.push(city.price)
+                }
+                //
+                break;
+              }
             }
 
           }
@@ -329,26 +325,28 @@
           //   y: [1, 2, 4, 8, 16]
           // },
 
-        //   text: '不動產',
-        //   value: 'A'
-        // },
-        // {
-        //   text: "預售屋",
-        //   value: 'B'
-        // },
-        // {
-        //   text: "不動產+預售屋(平均)",
-          if(this.selectedHouseType == "A") {
-            cityName = cityName + "-" +"不動產";
-          }
-          else if(this.selectedHouseType == "B") {
-            cityName = cityName + "-" +"預售屋";
-          }
-          else if(this.selectedHouseType == "C") {
-            cityName = cityName + "-" +"不動產+預售屋(平均)";
+          //   text: '不動產',
+          //   value: 'A'
+          // },
+          // {
+          //   text: "預售屋",
+          //   value: 'B'
+          // },
+          // {
+          //   text: "不動產+預售屋(平均)",
+          if (this.selectedHouseType == "A") {
+            cityName = cityName + "-" + "不動產";
+          } else if (this.selectedHouseType == "B") {
+            cityName = cityName + "-" + "預售屋";
+          } else if (this.selectedHouseType == "C") {
+            cityName = cityName + "-" + "不動產+預售屋(平均)";
           }
 
-          const final = {x:x_list, y:y_list, name:cityName};
+          const final = {
+            x: x_list,
+            y: y_list,
+            name: cityName
+          };
           console.log("final x,y list:", final);
 
           Plotly.plot(this.$refs.pie, [final]);
