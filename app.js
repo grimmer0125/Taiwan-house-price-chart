@@ -279,7 +279,7 @@ var app = new Vue({
 
       const layout = {
         //     "layout": {
-        "title": "台灣預售屋及不動產房價資料(2012S4～2014S3為季度平均,之後為一次10or15天平均), 顯示單位:萬",
+        "title": "台灣預售屋及不動產房價資料(2012S4～2017S3為季度平均,之後為一次10or15天平均), 顯示單位:萬",
         // "xaxis": {
         //     "tickformat": "%b %y",
         //     "tickprefix": "~~ ",
