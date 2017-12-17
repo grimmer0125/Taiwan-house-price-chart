@@ -222,11 +222,11 @@ var app = new Vue({
           // }
 
           if (this.selectedHouseType == "A") {
-            y_list.push(city.priceA)
+            y_list.push(city.priceA/10000)
           } else if (this.selectedHouseType == "B") {
-            y_list.push(city.priceB)
+            y_list.push(city.priceB/10000)
           } else if (this.selectedHouseType == "C") {
-            y_list.push(city.price)
+            y_list.push(city.price/10000)
           }
             //
             // break;
@@ -269,7 +269,25 @@ var app = new Vue({
       };
       console.log("final x,y list:", final);
 
-      Plotly.plot(this.$refs.pie, [final]);
+      const layout = {
+    //     "layout": {
+      "title": "台灣房價(預售屋/不動產)資料(從2012S4起), y軸單位:萬",
+    // "xaxis": {
+    //     "tickformat": "%b %y",
+    //     "tickprefix": "~~ ",
+    //     "showtickprefix": "first",
+    //     "ticksuffix": " !!",
+    //     "showticksuffix": "last"
+    // },
+        // "yaxis": {
+        //     // "type": "log",
+        //     "tickformat": "x<2.3s"
+        //     //":04,2f" // https://stackoverflow.com/questions/36546714/plotly-axis-label-format-with-plotly-js
+        // }
+// }
+      }
+
+      Plotly.plot(this.$refs.pie, [final], layout);
     }
   },
   // https://vuejs.org/v2/guide/components.html
