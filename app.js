@@ -39,7 +39,7 @@ var app = new Vue({
     ],
 
     // message: 'You loaded this page on ' + new Date().toLocaleString(),
-    selectedCity: 'F',
+    selectedCity: 'A',
     cityList: [
       {
         code: "C",
@@ -271,7 +271,7 @@ var app = new Vue({
 
       const layout = {
     //     "layout": {
-      "title": "台灣房價(預售屋/不動產)資料(從2012S4起), y軸單位:萬",
+      "title": "台灣預售屋及不動產房價資料(2012S4～2014S3為季度平均,之後為一次10or15天平均), 顯示單位:萬",
     // "xaxis": {
     //     "tickformat": "%b %y",
     //     "tickprefix": "~~ ",
@@ -287,7 +287,9 @@ var app = new Vue({
 // }
       }
 
-      Plotly.plot(this.$refs.pie, [final], layout);
+//      Plotly.plot(this.$refs.pie, [final], layout);
+        Plotly.newPlot(this.$refs.pie, [final], layout);
+
     }
   },
   // https://vuejs.org/v2/guide/components.html
