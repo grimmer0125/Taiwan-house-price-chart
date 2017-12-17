@@ -110,7 +110,8 @@ var app = new Vue({
       }
     ],
 
-    selected: ''
+    mode: "Single"
+    // selected: ''
     // data1: {
     //   x: [
     //     1, 2, 3, 4, 5
@@ -125,21 +126,20 @@ var app = new Vue({
     // }
   },
 
-
   // ref: https://github.com/vuejs/vue/blob/dev/examples/firebase/app.js#L11:15
   // https://github.com/vuejs/vuefire
 
   // firebase: {
-  //   // hide the get action of firebase, e.g.
-  //   // firebase.database().ref("houseprice").on
-  //   // houseData: houseRef,
+  //    hide the get action of firebase, e.g.
+  //    firebase.database().ref("houseprice").on
+  //    houseData: houseRef,
   //   houseData: {
   //     source: db.ref("/houseprice"),
-  //     // optionally bind as an object
+  //      optionally bind as an object
   //     asObject: true,
-  //     // optionally provide the cancelCallback
+  //      optionally provide the cancelCallback
   //     cancelCallback: function () {},
-  //     // this is called once the data has been retrieved from firebase
+  //      this is called once the data has been retrieved from firebase
   //     readyCallback: function () {}
   //   }
   // },
@@ -163,6 +163,7 @@ var app = new Vue({
         //    so use newPlot
         //   Plotly.newPlot(this.$refs.pie, [this.data2]);
         // }
+
         this.redrawPlotly();
       }
     },
@@ -170,6 +171,13 @@ var app = new Vue({
     selectedCity: function(val, oldVal) {
       console.log('new selected: %s, old: %s', val, oldVal)
       if (val !== oldVal) {
+        this.redrawPlotly();
+      }
+    },
+
+    mode: function(val, oldVal) {
+      if (val !== oldVal && val === "Single") {
+        console.log("change to single, redraw");
         this.redrawPlotly();
       }
     }
@@ -186,7 +194,7 @@ var app = new Vue({
       const y_list = [];
       let cityName = '';
 
-      const dates = Object.keys(this.houseData);//this.$firebaseRefs.houseData);//this.houseData);
+      const dates = Object.keys(this.houseData); //this.$firebaseRefs.houseData);//this.houseData);
       for (const date of dates) {
 
         // S1 -> 0.125
@@ -199,13 +207,13 @@ var app = new Vue({
         // array
         const dateData = this.houseData[date];
 
-        if(dateData.hasOwnProperty(this.selectedCity)){
+        if (dateData.hasOwnProperty(this.selectedCity)) {
           const city = dateData[this.selectedCity];
 
-        // }
-        // for (let city of quarterData) {
-        //   console.log("city:%s;target:%s", city.code, this.selectedCity)
-        //   if (city.code == this.selectedCity) {
+          // }
+          // for (let city of quarterData) {
+          //   console.log("city:%s;target:%s", city.code, this.selectedCity)
+          //   if (city.code == this.selectedCity) {
 
           cityName = city.name;
 
@@ -222,14 +230,14 @@ var app = new Vue({
           // }
 
           if (this.selectedHouseType == "A") {
-            y_list.push(city.priceA/10000)
+            y_list.push(city.priceA / 10000)
           } else if (this.selectedHouseType == "B") {
-            y_list.push(city.priceB/10000)
+            y_list.push(city.priceB / 10000)
           } else if (this.selectedHouseType == "C") {
-            y_list.push(city.price/10000)
+            y_list.push(city.price / 10000)
           }
-            //
-            // break;
+          //
+          // break;
           // }
         }
 
@@ -270,25 +278,31 @@ var app = new Vue({
       console.log("final x,y list:", final);
 
       const layout = {
-    //     "layout": {
-      "title": "台灣預售屋及不動產房價資料(2012S4～2014S3為季度平均,之後為一次10or15天平均), 顯示單位:萬",
-    // "xaxis": {
-    //     "tickformat": "%b %y",
-    //     "tickprefix": "~~ ",
-    //     "showtickprefix": "first",
-    //     "ticksuffix": " !!",
-    //     "showticksuffix": "last"
-    // },
+        //     "layout": {
+        "title": "台灣預售屋及不動產房價資料(2012S4～2014S3為季度平均,之後為一次10or15天平均), 顯示單位:萬",
+        // "xaxis": {
+        //     "tickformat": "%b %y",
+        //     "tickprefix": "~~ ",
+        //     "showtickprefix": "first",
+        //     "ticksuffix": " !!",
+        //     "showticksuffix": "last"
+        // },
         // "yaxis": {
-        //     // "type": "log",
+        //      "type": "log",
         //     "tickformat": "x<2.3s"
-        //     //":04,2f" // https://stackoverflow.com/questions/36546714/plotly-axis-label-format-with-plotly-js
+        //     ":04,2f"  https://stackoverflow.com/questions/36546714/plotly-axis-label-format-with-plotly-js
         // }
-// }
+        // }
       }
 
-//      Plotly.plot(this.$refs.pie, [final], layout);
+      //      Plotly.plot(this.$refs.pie, [final], layout);
+
+      if (this.mode === "Single") {
         Plotly.newPlot(this.$refs.pie, [final], layout);
+      } else {
+        Plotly.plot(this.$refs.pie, [final], layout);
+
+      }
 
     }
   },
@@ -308,7 +322,7 @@ var app = new Vue({
     //     source: db.ref("/houseprice"),
     // fetch("house_price.json").then(response => response.json()).then(json => {
     //
-    //   // this.houseData = json;
+    //    this.houseData = json;
     //
     //   console.log("house price:")
     //   console.log(this.houseData)

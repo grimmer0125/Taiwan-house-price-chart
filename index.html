@@ -76,14 +76,21 @@
           <option v-for="city in cityList" v-bind:value="city.code">
             {{ city.name }}
           </option>
-      </select>
+        </select>
+      </div>
+      <div>
+        <input type="radio" id="single" value="Single" v-model="mode">
+        <label>Single</label>
+        <br>
+        <input type="radio" id="multi" value="Multi" v-model="mode">
+        <label>Multi</label>
       </div>
     </div>
 
     <div ref="pie">
     </div>
   </div>
-   <script src="app.js"></script>
+  <script src="app.js"></script>
   <!-- <script language="JavaScript">
   </script> -->
 
