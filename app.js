@@ -1,3 +1,51 @@
+const NewTaipeiDistricts = {
+  全區: 1,
+  萬里區: 207,
+  金山區: 208,
+  板橋區: 220,
+  汐止區: 221,
+  深坑區: 222,
+  石碇區: 223,
+  瑞芳區: 224,
+  平溪區: 226,
+  雙溪區: 227,
+  貢寮區: 228,
+  新店區: 231,
+  坪林區: 232,
+  烏來區: 233,
+  永和區: 234,
+  中和區: 235,
+  土城區: 236,
+  三峽區: 237,
+  樹林區: 238,
+  鶯歌區: 239,
+  三重區: 241,
+  新莊區: 242,
+  泰山區: 243,
+  林口區: 244,
+  蘆洲區: 247,
+  五股區: 248,
+  八里區: 249,
+  淡水區: 251,
+  三芝區: 252,
+  石門區: 253,
+};
+
+const TaipeiDistricts = {
+  全區: '1',
+  中正區: '100',
+  大同區: '103',
+  中山區: '104',
+  松山區: '105',
+  大安區: '106',
+  萬華區: '108',
+  信義區: '110',
+  士林區: '111',
+  北投區: '112',
+  內湖區: '114',
+  南港區: '115',
+  文山區: '116',
+};
 const config = {
   apiKey: "AIzaSyCoDf4HF9cT88KfjsFIk8-6whrxsSdd7mQ",
   authDomain: "taiwanhouseprice.firebaseapp.com",
@@ -21,6 +69,7 @@ Vue.component('sub-component', {
 })
 var app = new Vue({
   el: '#app',
+
   data: {
     //selected: "B",//"不動產", A , 預售屋 B
 
@@ -39,7 +88,7 @@ var app = new Vue({
     ],
 
     // message: 'You loaded this page on ' + new Date().toLocaleString(),
-    selectedCity: 'A',
+    selectedCity: 'F',
     cityList: [
       {
         code: "C",
@@ -110,7 +159,8 @@ var app = new Vue({
       }
     ],
 
-    mode: "Single"
+    selectedDistrict:'全區',
+    mode: "Single",
     // selected: ''
     // data1: {
     //   x: [
@@ -124,6 +174,22 @@ var app = new Vue({
     //   ],
     //   y: [1, 2, 4, 8, 16]
     // }
+  },
+
+  computed: {
+    // a computed getter
+    districtList: function () {
+      // `this` points to the vm instance
+      // return this.message.split('').reverse().join('')
+
+      if(this.selectedCity == "A") {
+        return Object.keys(TaipeiDistricts);
+      } else if(this.selectedCity == "F") {
+        return Object.keys(NewTaipeiDistricts);
+      } else {
+        return [];
+      }
+    }
   },
 
   // ref: https://github.com/vuejs/vue/blob/dev/examples/firebase/app.js#L11:15
@@ -180,6 +246,20 @@ var app = new Vue({
         console.log("change to single, redraw");
         this.redrawPlotly();
       }
+    },
+
+    selectedDistrict: function(val, oldVal) {
+
+      // 如果從新北-新店 -> 新竹市/台北市, 此值不會變, 但台北市選單ui會show第一個
+      console.log("new selectedDistrict:", val);
+
+      if (val !== oldVal) {
+        this.redrawPlotly();
+      }
+      // if (val !== oldVal && val === "Single") {
+      //   console.log("change to single, redraw");
+      //   this.redrawPlotly();
+      // }
     }
   },
 
@@ -229,12 +309,37 @@ var app = new Vue({
           //   x_list.push(quarter.replace("S4", "-11-15"));
           // }
 
+          let region = null;
+          if (city.districts && this.selectedDistrict && city.districts.hasOwnProperty(this.selectedDistrict)) {
+            region = city.districts[this.selectedDistrict];
+          } else {
+            region = city;
+          }
+
           if (this.selectedHouseType == "A") {
-            y_list.push(city.dataA.price / 10000)
+            // let region = null;
+            // if (city.districts && this.selectedDistrict && city.districts.hasOwnProperty(selectedDistrict)) {
+            //   region = city.districts[selectedDistrict];
+            // } else {
+            //   region = city
+            // }
+            y_list.push(region.dataA.price / 10000);
           } else if (this.selectedHouseType == "B") {
-            y_list.push(city.dataB.price / 10000)
+            // let region = null;
+            // if (city.districts && this.selectedDistrict && city.districts.hasOwnProperty(selectedDistrict)) {
+            //   region = city.districts[selectedDistrict];
+            // } else {
+            //   y_list.push(city.dataA.price / 10000)
+            // }
+            y_list.push(region.dataB.price / 10000);
           } else if (this.selectedHouseType == "C") {
-            y_list.push(city.price / 10000)
+
+            // if (city.districts && this.selectedDistrict && city.districts.hasOwnProperty(selectedDistrict)) {
+            //   y_list.push(city.districts[selectedDistrict].price / 10000);
+            // } else {
+            //   y_list.push(city.price / 10000)
+            // }
+            y_list.push(region.price / 10000);
           }
           //
           // break;
@@ -270,6 +375,9 @@ var app = new Vue({
         cityName = cityName + "-" + "不動產+預售屋(平均)";
       }
 
+      if (this.selectedDistrict && this.selectedDistrict != "全區") {
+        cityName += this.selectedDistrict;
+      }
       const final = {
         x: x_list,
         y: y_list,

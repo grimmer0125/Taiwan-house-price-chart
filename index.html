@@ -77,11 +77,18 @@
         </select>
       </div>
       <div>
+        <select style="font-size:24px;" v-model="selectedDistrict">
+          <option v-for="district in districtList" v-bind:value="district">
+            {{ district }}
+          </option>
+        </select>
+      </div>
+      <div>
         <input type="radio" id="single" value="Single" v-model="mode">
-        <label>Single</label>
+        <label style="font-size:24px;">Single</label>
         <br>
         <input type="radio" id="multi" value="Multi" v-model="mode">
-        <label>Multi</label>
+        <label style="font-size:24px;">Multi</label>
       </div>
     </div>
 
