@@ -340,7 +340,7 @@ var app = new Vue({
             // } else {
             //   region = city
             // }
-            y_list.push(region.dataA.price / 10000);
+            y_list.push( (region.dataA.price / 10000).toFixed(1));
           } else if (this.selectedHouseType == "B") {
             // let region = null;
             // if (city.districts && this.selectedDistrict && city.districts.hasOwnProperty(selectedDistrict)) {
@@ -348,7 +348,7 @@ var app = new Vue({
             // } else {
             //   y_list.push(city.dataA.price / 10000)
             // }
-            y_list.push(region.dataB.price / 10000);
+            y_list.push((region.dataB.price / 10000).toFixed(1));
           } else if (this.selectedHouseType == "C") {
 
             // if (city.districts && this.selectedDistrict && city.districts.hasOwnProperty(selectedDistrict)) {
@@ -356,7 +356,7 @@ var app = new Vue({
             // } else {
             //   y_list.push(city.price / 10000)
             // }
-            y_list.push(region.price / 10000);
+            y_list.push((region.price / 10000).toFixed(1));
           }
           //
           // break;
