@@ -237,9 +237,16 @@ var app = new Vue({
     selectedCity: function(val, oldVal) {
       console.log('new selected: %s, old: %s', val, oldVal)
 
-      if (this.districtList && this.selectedDistrict && this.selectedDistrict != "全區" &&
+      if (this.districtList && this.selectedDistrict &&
+        // this.selectedDistrict != "全區" &&
         this.districtList.indexOf(this.selectedDistrict) >-1) {
+
+        if (val !== oldVal) {
+          this.redrawPlotly();
+        }
       } else {
+        // 不等於全區但不在新的裡面
+
         // will trigger twice redrawPlotly!!!!! from A-non-全區 -> B city
         this.selectedDistrict = '全區';
       }
@@ -248,9 +255,7 @@ var app = new Vue({
         // cityName += this.selectedDistrict;
       // }
 
-      if (val !== oldVal) {
-        this.redrawPlotly();
-      }
+
     },
 
     mode: function(val, oldVal) {
