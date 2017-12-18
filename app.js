@@ -375,7 +375,10 @@ var app = new Vue({
         cityName = cityName + "-" + "不動產+預售屋(平均)";
       }
 
-      if (this.selectedDistrict && this.selectedDistrict != "全區") {
+      if (this.districtList && this.selectedDistrict && this.selectedDistrict != "全區" &&
+        this.districtList.indexOf(this.selectedDistrict) >-1) {
+
+      // if (this.selectedDistrict && this.selectedDistrict != "全區") {
         cityName += this.selectedDistrict;
       }
       const final = {
