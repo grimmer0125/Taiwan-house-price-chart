@@ -418,7 +418,7 @@ var app = new Vue({
   mounted: function() {
 
     console.log("mounted");
-    const dataPath = "/houseprice-test";
+    const dataPath = "/houseprice";
     firebase.database().ref(dataPath).on('value', (snap) => {
       console.log("get the house data:", snap.val());
       this.houseData = snap.val();
