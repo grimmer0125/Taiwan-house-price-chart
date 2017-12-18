@@ -230,9 +230,9 @@ var app = new Vue({
           // }
 
           if (this.selectedHouseType == "A") {
-            y_list.push(city.priceA / 10000)
+            y_list.push(city.dataA.price / 10000)
           } else if (this.selectedHouseType == "B") {
-            y_list.push(city.priceB / 10000)
+            y_list.push(city.dataB.price / 10000)
           } else if (this.selectedHouseType == "C") {
             y_list.push(city.price / 10000)
           }
@@ -310,10 +310,9 @@ var app = new Vue({
   mounted: function() {
 
     console.log("mounted");
-    const dataPath = "/houseprice";
+    const dataPath = "/houseprice-test";
     firebase.database().ref(dataPath).on('value', (snap) => {
-      console.log("get the house data:");
-      console.log("get the house data2:", snap.val());
+      console.log("get the house data:", snap.val());
       this.houseData = snap.val();
 
       this.redrawPlotly();
