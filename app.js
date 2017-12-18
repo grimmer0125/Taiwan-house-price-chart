@@ -187,7 +187,7 @@ var app = new Vue({
       } else if(this.selectedCity == "F") {
         return Object.keys(NewTaipeiDistricts);
       } else {
-        return [];
+        return ["全區"];
       }
     }
   },
@@ -236,6 +236,18 @@ var app = new Vue({
 
     selectedCity: function(val, oldVal) {
       console.log('new selected: %s, old: %s', val, oldVal)
+
+      if (this.districtList && this.selectedDistrict && this.selectedDistrict != "全區" &&
+        this.districtList.indexOf(this.selectedDistrict) >-1) {
+      } else {
+        // will trigger twice redrawPlotly!!!!! from A-non-全區 -> B city
+        this.selectedDistrict = '全區';
+      }
+
+      // if (this.selectedDistrict && this.selectedDistrict != "全區") {
+        // cityName += this.selectedDistrict;
+      // }
+
       if (val !== oldVal) {
         this.redrawPlotly();
       }
@@ -386,7 +398,7 @@ var app = new Vue({
         y: y_list,
         name: cityName
       };
-      console.log("final x,y list:", final);
+      console.log("redraw reploty !!!!!!"); //final x,y list:", final);
 
       const layout = {
         //     "layout": {
