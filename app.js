@@ -72,7 +72,7 @@ var app = new Vue({
 
   data: {
     //selected: "B",//"不動產", A , 預售屋 B
-
+    drawnChartNames:[],
     selectedHouseType: 'A',
     houseTypeOptions: [
       {
@@ -427,9 +427,16 @@ var app = new Vue({
 
       if (this.mode === "Single") {
         Plotly.newPlot(this.$refs.pie, [final], layout);
+        this.drawnChartNames.length = 0;
+        this.drawnChartNames.push(cityName);
       } else {
-        Plotly.plot(this.$refs.pie, [final], layout);
-
+        //check cityName
+        if (this.drawnChartNames.indexOf(cityName) > -1) {
+          console.log("do not draw duplicate chart !!!!");
+        } else {
+          Plotly.plot(this.$refs.pie, [final], layout);
+          this.drawnChartNames.push(cityName);
+        }
       }
 
     }
