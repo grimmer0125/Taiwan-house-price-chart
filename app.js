@@ -445,6 +445,9 @@ var app = new Vue({
   mounted: function() {
 
     console.log("mounted");
+    (window.adsbygoogle = window.adsbygoogle || []).push({});
+    console.log("tried google adsense");
+
     const dataPath = "/houseprice";
     firebase.database().ref(dataPath).on('value', (snap) => {
       console.log("get the house data:", snap.val());
